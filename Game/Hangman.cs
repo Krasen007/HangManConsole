@@ -11,13 +11,13 @@ namespace HangMan
     public class Hangman
     {
         private const string DictFile = "Assets/wordsEn.txt";
-        private const int NumberOfLives = 106;
-        private const int MinLetterLength = 4;
+
         private readonly string[] wordDictionary;
 
+        private int minLetterLength;
+        private int numberOfLives;
         private int remainingLives;
         private bool isGameOver;
-        private bool exitGame;
         private char[] currentGuess;
         private string allGuessedLetters;
         private string wrongLetters;
@@ -30,7 +30,7 @@ namespace HangMan
             if (File.Exists(DictFile))
             {
                 this.wordDictionary = File.ReadAllLines(DictFile);
-                this.NewGame();
+                this.MainMenu();
             }
             else
             {
@@ -39,63 +39,110 @@ namespace HangMan
                 Console.ReadKey(true);
                 this.ExitGame();
             }
+        }
 
-            if (this.exitGame)
+        private void MainMenu()
+        {
+            Console.Clear();
+            const string SelectDifficulty = "Select difficulty:\n1: Short words\n2: Medium words\n3: Long words\n4: Exit game";
+            Console.WriteLine(SelectDifficulty);
+
+            string pickDifficilty = Console.ReadLine();
+            if (this.IsInputCorrect(pickDifficilty, true))
             {
-                const string ExitString = "Have fun!";
-                Console.WriteLine(ExitString);
+                const string Easy = "1";
+                const string Medium = "2";
+                const string Hard = "3";
+                const string Exit = "4";
+                if (pickDifficilty.ToUpper() == Easy)
+                {
+                    this.minLetterLength = 3;
+                    this.numberOfLives = 9;
+                    this.NewGame(this.numberOfLives, this.minLetterLength);
+                }
+                else if (pickDifficilty.ToUpper() == Medium)
+                {
+                    this.minLetterLength = 4;
+                    this.numberOfLives = 6;
+                    this.NewGame(this.numberOfLives, this.minLetterLength);
+                }
+                else if (pickDifficilty.ToUpper() == Hard)
+                {
+                    this.minLetterLength = 6;
+                    this.numberOfLives = 3;
+                    this.NewGame(this.numberOfLives, this.minLetterLength);
+                }
+                else if (pickDifficilty.ToUpper() == Exit)
+                {
+                    this.ExitGame();
+                }
+            }
+            else
+            {
+                this.MainMenu();
             }
         }
 
-        private void NewGame()
+        private void NewGame(int numberOfLives, int minLetterLength)
         {
-            this.ResetValues(this.wordDictionary);
+            this.ResetValues(this.wordDictionary, numberOfLives, minLetterLength);
             this.GameLoop();
         }
 
         private void GameLoop()
         {
-            // Game Loop
             while (!this.isGameOver)
             {
-                this.DrawUi();
-
-                // Input
-                string guessedLetter = Console.ReadLine();
-
-                // Main Logic
-                if (this.IsInputCorrect(guessedLetter))
-                {
-                    this.UpdateLetters(guessedLetter);
-                    this.allGuessedLetters = this.allGuessedLetters + guessedLetter + ' ';
-                }
-
-                // Game Over Condition
-                if (this.remainingLives == 0)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Game over! The correct word was: {0}", this.selectedWord);
-                    this.isGameOver = true;
-                }
-
-                // Game Win Condition
-                string hackString = new string(this.currentGuess);
-                if (!hackString.Contains("_"))
-                {
-                    Console.Clear();
-                    Console.WriteLine("You won! The correct word was {0}", this.selectedWord);
-                    this.isGameOver = true;
-                    Console.ReadKey(true);                    
-                }
+                this.UpdateUI();
+                this.UpdateInput();
+                this.CheckGameOver();
+                this.CheckGameWin();
             }
 
             this.PlayAgain();
         }
 
+        private void CheckGameWin()
+        {
+            // Game Win Condition
+            string hackString = new string(this.currentGuess);
+            if (!hackString.Contains("_"))
+            {
+                Console.Clear();
+                Console.WriteLine("You won! The correct word was {0}", this.selectedWord);
+                this.isGameOver = true;
+                Console.ReadKey(true);
+            }
+        }
+
+        private void CheckGameOver()
+        {
+            // Game Over Condition
+            if (this.remainingLives == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Game over! The correct word was: {0}", this.selectedWord);
+                this.isGameOver = true;
+            }
+        }
+
+        private void UpdateInput()
+        {
+            // Input
+            string guessedLetter = Console.ReadLine();
+
+            // Main Logic
+            if (this.IsInputCorrect(guessedLetter))
+            {
+                this.UpdateLetters(guessedLetter);
+                this.allGuessedLetters = this.allGuessedLetters + guessedLetter + ' ';
+            }
+        }
+
         private void PlayAgain()
         {
             Console.Clear();
-            const string PlayAgainText = "Do you want to play again?, type Y to play a new word, N to quit game.";
+            const string PlayAgainText = "Do you want to play again?, type Y to play a new word, N to quit game.\nPress M to return to the menu.";
             Console.WriteLine(PlayAgainText);
 
             string playAgainLetter = Console.ReadLine();
@@ -103,13 +150,18 @@ namespace HangMan
             {
                 const string Yes = "Y";
                 const string No = "N";
+                const string Menu = "M";
                 if (playAgainLetter.ToUpper() == Yes)
                 {
-                    this.NewGame();
+                    this.NewGame(this.numberOfLives, this.minLetterLength);
                 }
                 else if (playAgainLetter.ToUpper() == No)
                 {
                     this.ExitGame();
+                }
+                else if (playAgainLetter.ToUpper() == Menu)
+                {
+                    this.MainMenu();
                 }
                 else
                 {
@@ -122,10 +174,10 @@ namespace HangMan
             }
         }
 
-        private bool ExitGame()
+        private void ExitGame()
         {
-            this.exitGame = true;
-            return this.exitGame;
+            const string ExitString = "Have fun!";
+            Console.WriteLine(ExitString);
         }
 
         private void UpdateLetters(string guessedLetter)
@@ -150,10 +202,10 @@ namespace HangMan
             }
         }
 
-        private bool IsInputCorrect(string guessedLetter)
+        private bool IsInputCorrect(string guessedInput)
         {
             // Validating input
-            if (guessedLetter.Length > 1 || guessedLetter.Length == 0)
+            if (guessedInput.Length > 1 || guessedInput.Length == 0)
             {
                 Console.Clear();
                 const string SingleLetter = "Wrong Input! Please, input a Single letter";
@@ -161,7 +213,7 @@ namespace HangMan
                 Console.ReadKey(true);
                 return false;
             }
-            else if (!char.IsLetter(Convert.ToChar(guessedLetter)))
+            else if (!char.IsLetter(Convert.ToChar(guessedInput)))
             {
                 Console.Clear();
                 const string WrongCharacter = "Wrong Input! Please, input a letter";
@@ -173,7 +225,29 @@ namespace HangMan
             return true;
         }
 
-        private void DrawUi()
+        private bool IsInputCorrect(string guessedInput, bool isNumber)
+        {
+            if (guessedInput.Length > 1 || guessedInput.Length == 0)
+            {
+                Console.Clear();
+                const string SingleLetter = "Wrong Input! Please, input a Single number";
+                Console.WriteLine(SingleLetter);
+                Console.ReadKey(true);
+                return false;
+            }
+            else if (char.IsLetter(Convert.ToChar(guessedInput)))
+            {
+                Console.Clear();
+                const string WrongCharacter = "Wrong Input! Please, input a Number for the selected difficulty";
+                Console.WriteLine(WrongCharacter);
+                Console.ReadKey(true);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void UpdateUI()
         {
             Console.Clear();
 
@@ -193,7 +267,7 @@ namespace HangMan
             Console.Write(InputLetter);
         }
 
-        private void ResetValues(string[] dictionary)
+        private void ResetValues(string[] dictionary, int numberOfLives, int minLetterLength)
         {
             Random rng = new Random();
             this.selectedWord = string.Empty;
@@ -204,10 +278,10 @@ namespace HangMan
                 int randomWordIndex = rng.Next(0, dictionary.Length);
                 this.selectedWord = dictionary[randomWordIndex];
             }
-            while (this.selectedWord.Length <= MinLetterLength);
+            while (this.selectedWord.Length <= minLetterLength);
 
             // Initialiazation
-            this.remainingLives = NumberOfLives;
+            this.remainingLives = numberOfLives;
             this.currentGuess = new string('_', this.selectedWord.Length).ToCharArray();
             this.allGuessedLetters = string.Empty;
             this.wrongLetters = string.Empty;

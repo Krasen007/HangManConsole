@@ -24,7 +24,7 @@
                     Console.ReadKey(true);
                     return false;
                 }
-                else if (isNumber && (char.IsLetter(Convert.ToChar(guessedInput))))
+                else if (isNumber && char.IsLetter(Convert.ToChar(guessedInput)))
                 {
                     Console.Clear();
                     const string WrongCharacter = "Wrong Input! Please, input a Number for the selected difficulty";
@@ -45,11 +45,12 @@
             }
             catch (Exception)
             {
+                Console.Clear();
                 const string WrongMultiGuess = "Guess with only one character!";
                 Console.WriteLine(WrongMultiGuess);
                 Console.ReadKey(true);
                 return false;
-            }            
+            }
         }
     }
 }

@@ -5,6 +5,7 @@
 
 namespace HangMan
 {
+    using HangMan.Helper;
     using System;
     using System.IO;
 
@@ -23,6 +24,7 @@ namespace HangMan
         private string wrongLetters;
         private string correctLetters;
         private string selectedWord;
+        private CheckInput checkInput = new CheckInput();
 
         public Hangman()
         {
@@ -48,7 +50,8 @@ namespace HangMan
             Console.WriteLine(SelectDifficulty);
 
             string pickDifficilty = Console.ReadLine();
-            if (this.IsInputCorrect(pickDifficilty, true))
+
+            if (checkInput.IsInputCorrect(pickDifficilty, true))
             {
                 const string Easy = "1";
                 const string Medium = "2";
@@ -75,6 +78,10 @@ namespace HangMan
                 else if (pickDifficilty.ToUpper() == Exit)
                 {
                     this.ExitGame();
+                }
+                else
+                {
+                    this.MainMenu();
                 }
             }
             else
@@ -132,7 +139,8 @@ namespace HangMan
             string guessedLetter = Console.ReadLine();
 
             // Main Logic
-            if (this.IsInputCorrect(guessedLetter))
+
+            if (checkInput.IsInputCorrect(guessedLetter, false))
             {
                 this.UpdateLetters(guessedLetter);
                 this.allGuessedLetters = this.allGuessedLetters + guessedLetter + ' ';
@@ -146,7 +154,8 @@ namespace HangMan
             Console.WriteLine(PlayAgainText);
 
             string playAgainLetter = Console.ReadLine();
-            if (this.IsInputCorrect(playAgainLetter))
+
+            if (checkInput.IsInputCorrect(playAgainLetter, false))
             {
                 const string Yes = "Y";
                 const string No = "N";
@@ -200,51 +209,6 @@ namespace HangMan
                 this.remainingLives--;
                 this.wrongLetters = this.wrongLetters + guessedLetter + ' ';
             }
-        }
-
-        private bool IsInputCorrect(string guessedInput)
-        {
-            // Validating input
-            if (guessedInput.Length > 1 || guessedInput.Length == 0)
-            {
-                Console.Clear();
-                const string SingleLetter = "Wrong Input! Please, input a Single letter";
-                Console.WriteLine(SingleLetter);
-                Console.ReadKey(true);
-                return false;
-            }
-            else if (!char.IsLetter(Convert.ToChar(guessedInput)))
-            {
-                Console.Clear();
-                const string WrongCharacter = "Wrong Input! Please, input a letter";
-                Console.WriteLine(WrongCharacter);
-                Console.ReadKey(true);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool IsInputCorrect(string guessedInput, bool isNumber)
-        {
-            if (guessedInput.Length > 1 || guessedInput.Length == 0)
-            {
-                Console.Clear();
-                const string SingleLetter = "Wrong Input! Please, input a Single number";
-                Console.WriteLine(SingleLetter);
-                Console.ReadKey(true);
-                return false;
-            }
-            else if (char.IsLetter(Convert.ToChar(guessedInput)))
-            {
-                Console.Clear();
-                const string WrongCharacter = "Wrong Input! Please, input a Number for the selected difficulty";
-                Console.WriteLine(WrongCharacter);
-                Console.ReadKey(true);
-                return false;
-            }
-
-            return true;
         }
 
         private void UpdateUI()

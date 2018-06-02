@@ -1,12 +1,17 @@
-﻿namespace HangMan.States
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Krasen Ivanov. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+namespace HangMan.States
 {
     using System;
     using HangMan.Helper;
 
     public class Game
     {
-        // private int minLetterLength;
-        //  private int numberOfLives;
+        ////private int minLetterLength;
+        ////private int numberOfLives;
         private readonly CheckInput checkInput = new CheckInput();
 
         private int remainingLives;
@@ -15,7 +20,7 @@
         private string allGuessedLetters;
         private string wrongLetters;
         private string correctLetters;
-        private string selectedWord;
+        private string wordToGuess;
 
         ////private int minLetterLength;
         ////private int numberOfLives;
@@ -24,21 +29,21 @@
         ////    this.NewGame();
         ////}
 
-        public void NewGame(string[] dictionary, int numberOfLives, int minLetterLength)
+        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength)
         {
             Random rng = new Random();
-            this.selectedWord = string.Empty;
+            this.wordToGuess = string.Empty;
 
             do
             {
-                int randomWordIndex = rng.Next(0, dictionary.Length);
-                this.selectedWord = dictionary[randomWordIndex];
+                int pickRandomWord = rng.Next(0, wordDictionary.Length);
+                this.wordToGuess = wordDictionary[pickRandomWord];
             }
-            while (this.selectedWord.Length <= minLetterLength);
+            while (this.wordToGuess.Length <= minLetterLength);
 
             // Initialiazation
             this.remainingLives = numberOfLives;
-            this.currentGuess = new string('_', this.selectedWord.Length).ToCharArray();
+            this.currentGuess = new string('_', this.wordToGuess.Length).ToCharArray();
             this.allGuessedLetters = string.Empty;
             this.wrongLetters = string.Empty;
             this.correctLetters = string.Empty;
@@ -63,11 +68,11 @@
         private void CheckGameWin()
         {
             // Game Win Condition
-            string hackString = new string(this.currentGuess);
-            if (!hackString.Contains("_"))
+            string checkString = new string(this.currentGuess);
+            if (!checkString.Contains("_"))
             {
                 Console.Clear();
-                Console.WriteLine("You won! The correct word was {0}", this.selectedWord);
+                Console.WriteLine("You won! The correct word was {0}", this.wordToGuess);
                 this.isGameOver = true;
                 Console.ReadKey(true);
             }
@@ -76,10 +81,11 @@
         private void CheckGameOver()
         {
             // Game Over Condition
-            if (this.remainingLives == 0)
+            if (this.remainingLives <= 0)
             {
+                this.remainingLives = 0;
                 Console.Clear();
-                Console.WriteLine("Game over! The correct word was: {0}", this.selectedWord);
+                Console.WriteLine("Game over! The correct word was: {0}", this.wordToGuess);
                 this.isGameOver = true;
             }
         }
@@ -107,7 +113,7 @@
                 Console.Write("{0} ", this.currentGuess[i]);
             }
 
-            Console.WriteLine();
+            Console.WriteLine(" " + this.wordToGuess);
             Console.WriteLine("Number of Lives: {0}", this.remainingLives);
             Console.WriteLine();
             Console.WriteLine("All Guessed Letters: {0}", this.allGuessedLetters);
@@ -123,7 +129,7 @@
 
             for (int i = 0; i < this.currentGuess.Length; i++)
             {
-                if (this.selectedWord[i] == Convert.ToChar(guessedLetter))
+                if (this.wordToGuess[i] == Convert.ToChar(guessedLetter))
                 {
                     this.currentGuess[i] = Convert.ToChar(guessedLetter);
                     this.correctLetters = this.correctLetters + guessedLetter + ' ';
@@ -154,7 +160,7 @@
                 const string Menu = "M";
                 if (playAgainLetter.ToUpper() == Yes)
                 {
-                    //this.NewGameMain(this.numberOfLives, this.minLetterLength);
+                    ////this.NewGame(this.numberOfLives, this.minLetterLength);
                 }
                 else if (playAgainLetter.ToUpper() == No)
                 {
@@ -162,7 +168,7 @@
                 }
                 else if (playAgainLetter.ToUpper() == Menu)
                 {
-                    // this.MainMenu();
+                   //// new MainMenu();
                 }
                 else
                 {

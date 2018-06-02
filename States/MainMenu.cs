@@ -1,4 +1,9 @@
-﻿namespace HangMan.States
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Krasen Ivanov. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+namespace HangMan.States
 {
     using System;
     using HangMan.Helper;
@@ -7,10 +12,7 @@
     {
         private readonly CheckInput checkInput = new CheckInput();
         private readonly Game game = new Game();
-
-        private int minLetterLength;
-        private int numberOfLives;
-
+        
         public MainMenu(string[] wordDictionary)
         {
             this.SelectGameMode(wordDictionary);
@@ -24,6 +26,9 @@
 
             string pickDifficilty = Console.ReadLine();
 
+            int minLetterLength;
+            int numberOfLives;
+
             if (this.checkInput.IsInputCorrect(pickDifficilty, true))
             {
                 const string Easy = "1";
@@ -32,26 +37,26 @@
                 const string Exit = "4";
                 if (pickDifficilty.ToUpper() == Easy)
                 {
-                    this.minLetterLength = 3;
-                    this.numberOfLives = 9;
-                    this.game.NewGame(wordDictionary, this.numberOfLives, this.minLetterLength);
+                    minLetterLength = 3;
+                    numberOfLives = 9;
+                    this.game.NewGame(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Medium)
                 {
-                    this.minLetterLength = 4;
-                    this.numberOfLives = 6;
-                    this.game.NewGame(wordDictionary, this.numberOfLives, this.minLetterLength);
+                    minLetterLength = 4;
+                    numberOfLives = 6;
+                    this.game.NewGame(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Hard)
                 {
-                    this.minLetterLength = 6;
-                    this.numberOfLives = 3;
-                    this.game.NewGame(wordDictionary, this.numberOfLives, this.minLetterLength);
+                    minLetterLength = 6;
+                    numberOfLives = 3;
+                    this.game.NewGame(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Exit)
                 {
-                    // this.ExitGame();
-                    // just exits the funcion.
+                    //// this.ExitGame();
+                    //// just exits the funcion.
                 }
                 else
                 {

@@ -11,15 +11,15 @@ namespace HangMan
 
     public class Hangman
     {
-        private const string DictFile = "Assets/wordsEn.txt";
-        private readonly string[] wordDictionary;
+        private const string DictFile = "Assets/wordsEn.txt";        
 
         public Hangman()
         {
             if (File.Exists(DictFile))
             {
-                this.wordDictionary = File.ReadAllLines(DictFile);
-                this.StartMainMenu(this.wordDictionary);
+                string[] wordDictionary;
+                wordDictionary = File.ReadAllLines(DictFile);
+                this.StartMainMenu(wordDictionary);
                 //// this.MainMenu();
             }
             else
@@ -31,9 +31,6 @@ namespace HangMan
             }
         }
 
-        private void StartMainMenu(string[] wordDictionary)
-        {
-            MainMenu mainMenu = new MainMenu(wordDictionary);
-        }
+        private void StartMainMenu(string[] wordDictionary) => new MainMenu(wordDictionary);
     }
 }

@@ -9,6 +9,10 @@ namespace HangMan
 
     public class Start
     {
+        protected Start()
+        {
+        }
+
         public static void Main(string[] args)
         {
             WelcomeText();
@@ -19,10 +23,7 @@ namespace HangMan
         /// <summary>
         /// Start the game instance.
         /// </summary>
-        private static void StartGame()
-        {
-            Hangman game = new Hangman();
-        }
+        private static void StartGame() => new Hangman();
 
         /// <summary>
         /// Press any key to start the game.

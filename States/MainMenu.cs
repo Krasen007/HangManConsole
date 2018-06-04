@@ -6,15 +6,19 @@
 namespace HangMan.States
 {
     using System;
+    using System.IO;
     using HangMan.Helper;
 
     public class MainMenu
     {
         private readonly CheckInput checkInput = new CheckInput();
-        private readonly Game game = new Game();
+        private Game game;
         
-        public MainMenu(string[] wordDictionary)
+        public MainMenu()
         {
+            string[] wordDictionary;
+            wordDictionary = File.ReadAllLines(Constants.GameWordDictionary);
+
             this.SelectGameMode(wordDictionary);
         }
 
@@ -39,19 +43,19 @@ namespace HangMan.States
                 {
                     minLetterLength = 3;
                     numberOfLives = 9;
-                    this.game.NewGame(wordDictionary, numberOfLives, minLetterLength);
+                    this.game = new Game(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Medium)
                 {
                     minLetterLength = 4;
                     numberOfLives = 6;
-                    this.game.NewGame(wordDictionary, numberOfLives, minLetterLength);
+                    this.game = new Game(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Hard)
                 {
                     minLetterLength = 6;
                     numberOfLives = 3;
-                    this.game.NewGame(wordDictionary, numberOfLives, minLetterLength);
+                    this.game = new Game(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Exit)
                 {

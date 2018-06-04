@@ -7,20 +7,16 @@ namespace HangMan
 {
     using System;
     using System.IO;
+    using HangMan.Helper;
     using HangMan.States;
 
     public class Hangman
     {
-        private const string DictFile = "Assets/wordsEn.txt";        
-
         public Hangman()
         {
-            if (File.Exists(DictFile))
+            if (File.Exists(Constants.GameWordDictionary))
             {
-                string[] wordDictionary;
-                wordDictionary = File.ReadAllLines(DictFile);
-                this.StartMainMenu(wordDictionary);
-                //// this.MainMenu();
+                this.StartMainMenu();
             }
             else
             {
@@ -31,6 +27,6 @@ namespace HangMan
             }
         }
 
-        private void StartMainMenu(string[] wordDictionary) => new MainMenu(wordDictionary);
+        private void StartMainMenu() => new MainMenu();
     }
 }

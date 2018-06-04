@@ -13,6 +13,9 @@ namespace HangMan.States
         ////private int minLetterLength;
         ////private int numberOfLives;
         private readonly CheckInput checkInput = new CheckInput();
+        private readonly string[] currentWordDictionary;
+        private readonly int numberOfLives;
+        private readonly int minLetterLength;
 
         private int remainingLives;
         private bool isGameOver;
@@ -21,6 +24,15 @@ namespace HangMan.States
         private string wrongLetters;
         private string correctLetters;
         private string wordToGuess;
+
+        public Game(string[] wordDictionary, int numberOfLives, int minLetterLength)
+        {
+            this.currentWordDictionary = wordDictionary;
+            this.numberOfLives = numberOfLives;
+            this.minLetterLength = minLetterLength;
+
+            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength);
+        }
 
         ////private int minLetterLength;
         ////private int numberOfLives;
@@ -160,7 +172,7 @@ namespace HangMan.States
                 const string Menu = "M";
                 if (playAgainLetter.ToUpper() == Yes)
                 {
-                    ////this.NewGame(this.numberOfLives, this.minLetterLength);
+                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength);
                 }
                 else if (playAgainLetter.ToUpper() == No)
                 {
@@ -168,7 +180,7 @@ namespace HangMan.States
                 }
                 else if (playAgainLetter.ToUpper() == Menu)
                 {
-                   //// new MainMenu();
+                   this.GoToMainMenu();
                 }
                 else
                 {
@@ -180,6 +192,8 @@ namespace HangMan.States
                 this.PlayAgain();
             }
         }
+
+        private void GoToMainMenu() => new MainMenu();
 
         private void ExitGame()
         {

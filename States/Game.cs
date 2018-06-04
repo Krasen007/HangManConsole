@@ -6,6 +6,7 @@
 namespace HangMan.States
 {
     using System;
+    using System.Text;
     using HangMan.Helper;
 
     public class Game
@@ -111,7 +112,8 @@ namespace HangMan.States
             if (this.checkInput.IsInputCorrect(guessedLetter, false))
             {
                 this.UpdateLetters(guessedLetter);
-                this.allGuessedLetters = this.allGuessedLetters + guessedLetter + ' ';
+                StringBuilder allGuessedLettersBuilder = new StringBuilder(this.allGuessedLetters + guessedLetter + ' ');
+                this.allGuessedLetters = allGuessedLettersBuilder.ToString();
             }
         }
 
@@ -144,7 +146,8 @@ namespace HangMan.States
                 if (this.wordToGuess[i] == Convert.ToChar(guessedLetter))
                 {
                     this.currentGuess[i] = Convert.ToChar(guessedLetter);
-                    this.correctLetters = this.correctLetters + guessedLetter + ' ';
+                    StringBuilder allGuessedLettersBuilder = new StringBuilder(this.correctLetters + guessedLetter + ' ');
+                    this.correctLetters = allGuessedLettersBuilder.ToString();
                     isLetterCorrect = true;
                 }
             }

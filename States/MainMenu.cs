@@ -12,26 +12,30 @@ namespace HangMan.States
     public class MainMenu
     {
         private readonly CheckInput checkInput = new CheckInput();
-        private Game game;
-        
+
         public MainMenu()
+        {
+            this.SelectGameMode();
+        }
+
+        private void SelectGameMode()
         {
             string[] wordDictionary;
             wordDictionary = File.ReadAllLines(Constants.GameWordDictionary);
+            string[] defaultDictionary = wordDictionary;
 
-            this.SelectGameMode(wordDictionary);
-        }
+            const int defaultLetterLength = 3;
+            const int defaultLives = 9;
 
-        private void SelectGameMode(string[] wordDictionary)
-        {
+            int minLetterLength = defaultLetterLength;
+            int numberOfLives = defaultLives;
+            bool wantToExit = false;
+
             Console.Clear();
             const string SelectDifficulty = "Select difficulty:\n1: Short words\n2: Medium words\n3: Long words\n4: Exit game";
             Console.WriteLine(SelectDifficulty);
 
             string pickDifficilty = Console.ReadLine();
-
-            int minLetterLength;
-            int numberOfLives;
 
             if (this.checkInput.IsInputCorrect(pickDifficilty, true))
             {
@@ -43,34 +47,53 @@ namespace HangMan.States
                 {
                     minLetterLength = 3;
                     numberOfLives = 9;
-                    this.game = new Game(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Medium)
                 {
                     minLetterLength = 4;
                     numberOfLives = 6;
-                    this.game = new Game(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Hard)
                 {
                     minLetterLength = 6;
                     numberOfLives = 3;
-                    this.game = new Game(wordDictionary, numberOfLives, minLetterLength);
                 }
                 else if (pickDifficilty.ToUpper() == Exit)
                 {
-                    //// this.ExitGame();
-                    //// just exits the funcion.
+                    wantToExit = true;
                 }
                 else
                 {
-                    this.SelectGameMode(wordDictionary);
+                    this.SelectGameMode();
                 }
             }
             else
             {
-                this.SelectGameMode(wordDictionary);
+                this.SelectGameMode();
+            }
+
+            if (wantToExit)
+            {
+                const string ExitString = "Bye.";
+                Console.WriteLine(ExitString);
+            }
+            else
+            {
+                if (minLetterLength != defaultLives)
+                {
+                    this.SelectedNewGame(wordDictionary, minLetterLength, numberOfLives);
+                }
+                else
+                {
+                    this.DefaultNewGame(defaultDictionary, defaultLetterLength, defaultLives);
+                }
             }
         }
+
+        private void SelectedNewGame(string[] wordDictionary, int minLetterLength, int numberOfLives)
+            => new Game(wordDictionary, numberOfLives, minLetterLength);
+
+        private void DefaultNewGame(string[] defaultDictionary, int defaultLetterLength, int defaultLives)
+            => new Game(defaultDictionary, defaultLives, defaultLetterLength);
     }
 }

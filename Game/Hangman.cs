@@ -17,13 +17,12 @@ namespace HangMan
             if (File.Exists(Constants.GameWordDictionary))
             {
                 this.StartMainMenu();
-            }
+            } 
             else
             {
                 const string FileMissing = "Game dictionary file does not exist. Exiting...";
                 Console.WriteLine(FileMissing);
-                Console.ReadKey(true);
-                //// this.ExitGame();
+                Console.ReadKey(intercept: true);
             }
         }
 

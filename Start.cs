@@ -15,7 +15,6 @@ namespace HangMan
 
         public static void Main(string[] args)
         {
-            WelcomeText();
             PressKeyToStart();
             StartGame();
         }
@@ -39,32 +38,23 @@ namespace HangMan
                 case PlatformID.Win32Windows:
                 case PlatformID.WinCE:
                     {
-                        Console.ReadKey(true);
+                        Console.WriteLine("Welcome to HangManConsole for Windows");
                         break;
                     }
 
                 case PlatformID.Unix:
-                    Console.WriteLine("Handle Linux");
-                    Console.ReadLine();
+                    Console.WriteLine("Welcome to HangManConsole for Linux");
                     break;
                 case PlatformID.MacOSX:
-                    Console.WriteLine("Handle Mac!");
-                    Console.ReadLine();
+                    Console.WriteLine("Welcome to HangManConsole for Mac!");
                     break;
                 default:
-                    Console.WriteLine("Handle this OS");
-                    Console.ReadLine();
+                    Console.WriteLine("Welcome to HangManConsole for this OS");
                     break;
             }
-        }
 
-        /// <summary>
-        /// Display Welcome text to the user.
-        /// </summary>
-        private static void WelcomeText()
-        {
-            const string WelcomeText = "Welcome to the Hangman game!\n\nPress any key to start";
-            Console.WriteLine(WelcomeText);
+            Console.WriteLine("\nPress any key to start\n");
+            Console.ReadKey(intercept: true);
         }
     }
 }

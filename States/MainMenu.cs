@@ -18,17 +18,20 @@ namespace HangMan.States
             this.SelectGameMode();
         }
 
+        /// <summary>
+        /// Lets the user select game mode.
+        /// </summary>
         private void SelectGameMode()
         {
             string[] wordDictionary;
             wordDictionary = File.ReadAllLines(Constants.GameWordDictionary);
             string[] defaultDictionary = wordDictionary;
 
-            const int defaultLetterLength = 3;
-            const int defaultLives = 9;
+            const int DefaultLetterLength = 3;
+            const int DefaultLives = 9;
 
-            int minLetterLength = defaultLetterLength;
-            int numberOfLives = defaultLives;
+            int minLetterLength = DefaultLetterLength;
+            int numberOfLives = DefaultLives;
             bool wantToExit = false;
 
             Console.Clear();
@@ -79,13 +82,13 @@ namespace HangMan.States
             }
             else
             {
-                if (minLetterLength != defaultLives)
+                if (minLetterLength != DefaultLives)
                 {
                     this.SelectedNewGame(wordDictionary, minLetterLength, numberOfLives);
                 }
                 else
                 {
-                    this.DefaultNewGame(defaultDictionary, defaultLetterLength, defaultLives);
+                    this.DefaultNewGame(defaultDictionary, DefaultLetterLength, DefaultLives);
                 }
             }
         }

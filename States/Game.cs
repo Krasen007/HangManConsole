@@ -11,8 +11,6 @@ namespace HangMan.States
 
     public class Game
     {
-        ////private int minLetterLength;
-        ////private int numberOfLives;
         private readonly CheckInput checkInput = new CheckInput();
         private readonly string[] currentWordDictionary;
         private readonly int numberOfLives;
@@ -34,13 +32,6 @@ namespace HangMan.States
 
             this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength);
         }
-
-        ////private int minLetterLength;
-        ////private int numberOfLives;
-        ////public Game()
-        ////{
-        ////    this.NewGame();
-        ////}
 
         public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength)
         {
@@ -71,49 +62,49 @@ namespace HangMan.States
             {
                 this.UpdateUI();
                 this.UpdateInput();
-                this.CheckGameOver();
                 this.CheckGameWin();
+                this.CheckGameOver();
             }
 
             this.PlayAgain();
         }
 
+        /// <summary>
+        /// Game Win Condition.
+        /// </summary>
         private void CheckGameWin()
         {
-            // Game Win Condition
             string checkString = new string(this.currentGuess);
             if (!checkString.Contains("_"))
             {
                 Console.Clear();
-                Console.WriteLine("You won! The correct word was {0}", this.wordToGuess);
+                Console.WriteLine("You won! The correct word was {0}\nPress any key to continue...\n", this.wordToGuess);
                 this.isGameOver = true;
                 Console.ReadKey(true);
             }
         }
 
+        /// <summary>
+        /// Game Over Condition.
+        /// </summary>
         private void CheckGameOver()
         {
-            // Game Over Condition
             if (this.remainingLives <= 0)
             {
                 this.remainingLives = 0;
                 Console.Clear();
-                Console.WriteLine("Game over! The correct word was: {0}", this.wordToGuess);
+                Console.WriteLine("Game over! The correct word was: {0}\n", this.wordToGuess);
                 this.isGameOver = true;
             }
         }
 
         private void UpdateInput()
         {
-            // Input
             string guessedLetter = Console.ReadLine();
 
-            // Main Logic
             if (this.checkInput.IsInputCorrect(guessedLetter, false))
             {
                 this.UpdateLetters(guessedLetter);
-                StringBuilder allGuessedLettersBuilder = new StringBuilder(this.allGuessedLetters + guessedLetter + ' ');
-                this.allGuessedLetters = allGuessedLettersBuilder.ToString();
             }
         }
 
@@ -121,7 +112,6 @@ namespace HangMan.States
         {
             Console.Clear();
 
-            // Drawing UI
             for (int i = 0; i < this.currentGuess.Length; i++)
             {
                 Console.Write("{0} ", this.currentGuess[i]);
@@ -135,7 +125,7 @@ namespace HangMan.States
             Console.WriteLine("Correct Letters: {0}", this.correctLetters);
             const string InputLetter = "Please, input a letter: ";
             Console.Write(InputLetter);
-        }        
+        }
 
         private void UpdateLetters(string guessedLetter)
         {
@@ -146,23 +136,34 @@ namespace HangMan.States
                 if (this.wordToGuess[i] == Convert.ToChar(guessedLetter))
                 {
                     this.currentGuess[i] = Convert.ToChar(guessedLetter);
-                    StringBuilder allGuessedLettersBuilder = new StringBuilder(this.correctLetters + guessedLetter + ' ');
-                    this.correctLetters = allGuessedLettersBuilder.ToString();
+
+                    StringBuilder correctLettersBuilder = new StringBuilder(this.correctLetters + guessedLetter + ' ');
+                    if (!this.correctLetters.Contains(guessedLetter))
+                    {
+                        this.correctLetters = correctLettersBuilder.ToString();
+                    }
+
                     isLetterCorrect = true;
                 }
             }
 
             // Taking lives
-            if (!isLetterCorrect)
+            StringBuilder wrongLettersBuilder = new StringBuilder(this.wrongLetters + guessedLetter + ' ');
+            if (!isLetterCorrect && !this.wrongLetters.Contains(guessedLetter))
             {
                 this.remainingLives--;
-                this.wrongLetters = this.wrongLetters + guessedLetter + ' ';
+                this.wrongLetters = wrongLettersBuilder.ToString();
+            }
+
+            StringBuilder allGuessedLettersBuilder = new StringBuilder(this.allGuessedLetters + guessedLetter + ' ');
+            if (!this.allGuessedLetters.Contains(guessedLetter))
+            {
+                this.allGuessedLetters = allGuessedLettersBuilder.ToString();
             }
         }
 
         private void PlayAgain()
         {
-            Console.Clear();
             const string PlayAgainText = "Do you want to play again?, type Y to play a new word, N to quit game.\nPress M to return to the menu.";
             Console.WriteLine(PlayAgainText);
 
@@ -183,7 +184,7 @@ namespace HangMan.States
                 }
                 else if (playAgainLetter.ToUpper() == Menu)
                 {
-                   this.GoToMainMenu();
+                    this.GoToMainMenu();
                 }
                 else
                 {

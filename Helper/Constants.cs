@@ -2,7 +2,8 @@
 {
     public class Constants
     {
-        public const string GameWordDictionary = "Assets/wordsEn.txt";
+        public const string AllWordsDictionary = "Assets/wordsEn.txt";
+        public const string AnimalsDictionary = "Assets/animals.txt";
 
         protected Constants()
         {

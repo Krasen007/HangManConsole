@@ -14,17 +14,49 @@ namespace HangMan.States
         private readonly CheckInput checkInput = new CheckInput();
 
         public MainMenu()
+        {            
+            this.SelectGameMode(this.PickGameDictionary());
+        }
+
+        private string[] PickGameDictionary()
         {
-            this.SelectGameMode();
+            Console.Clear();
+            Console.Write("Select Game Dictionary:\n" +
+                "1: Animals or 2: All words?" +
+                "\nType the number: ");
+            string pickGameDictionary = Console.ReadLine();
+            string[] wordDictionary = { };
+
+            if (this.checkInput.IsInputCorrect(pickGameDictionary, true))
+            {
+                const string Animals = "1";
+                const string AllWords = "2";
+                if (pickGameDictionary.ToUpper() == Animals)
+                {
+                    wordDictionary = File.ReadAllLines(Constants.AnimalsDictionary);
+                }
+                else if (pickGameDictionary.ToUpper() == AllWords)
+                {                    
+                    wordDictionary = File.ReadAllLines(Constants.AllWordsDictionary);
+                }
+                else
+                {
+                    this.PickGameDictionary();
+                }
+            }
+            else
+            {
+                this.PickGameDictionary();
+            }
+
+            return wordDictionary;
         }
 
         /// <summary>
         /// Lets the user select game mode.
         /// </summary>
-        private void SelectGameMode()
+        private void SelectGameMode(string[] wordDictionary)
         {
-            string[] wordDictionary;
-            wordDictionary = File.ReadAllLines(Constants.GameWordDictionary);
             string[] defaultDictionary = wordDictionary;
 
             const int DefaultLetterLength = 3;
@@ -35,8 +67,8 @@ namespace HangMan.States
             bool wantToExit = false;
 
             Console.Clear();
-            const string SelectDifficulty = "Select difficulty:\n1: Short words\n2: Medium words\n3: Long words\n4: Exit game";
-            Console.WriteLine(SelectDifficulty);
+            const string SelectDifficulty = "Select difficulty:\n1: Short words, 9 lives\n2: Medium words, 6 lives\n3: Long words, 3 lives\n4: Exit game\nYour pick: ";
+            Console.Write(SelectDifficulty);
 
             string pickDifficilty = Console.ReadLine();
 
@@ -67,12 +99,12 @@ namespace HangMan.States
                 }
                 else
                 {
-                    this.SelectGameMode();
+                    this.SelectGameMode(defaultDictionary);
                 }
             }
             else
             {
-                this.SelectGameMode();
+                this.SelectGameMode(defaultDictionary);
             }
 
             if (wantToExit)

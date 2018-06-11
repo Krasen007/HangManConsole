@@ -1,0 +1,10 @@
+horse
+dove
+chicken
+rooster
+cow
+pig
+dog
+cat
+sparrow
+parrot

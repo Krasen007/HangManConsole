@@ -14,7 +14,7 @@ namespace HangMan
     {
         public Hangman()
         {
-            if (File.Exists(Constants.GameWordDictionary))
+            if (File.Exists(Constants.AllWordsDictionary) && File.Exists(Constants.AnimalsDictionary))
             {
                 this.StartMainMenu();
             } 

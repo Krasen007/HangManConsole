@@ -40,7 +40,7 @@ namespace HangMan.States
 
             do
             {
-                int pickRandomWord = rng.Next(0, wordDictionary.Length);
+                int pickRandomWord = rng.Next(1, wordDictionary.Length);
                 this.wordToGuess = wordDictionary[pickRandomWord];
             }
             while (this.wordToGuess.Length <= minLetterLength);
@@ -56,6 +56,9 @@ namespace HangMan.States
             this.GameLoop();
         }
 
+        /// <summary>
+        /// Updated every frame.
+        /// </summary>
         public void GameLoop()
         {
             while (!this.isGameOver)
@@ -78,7 +81,8 @@ namespace HangMan.States
             if (!checkString.Contains("_"))
             {
                 Console.Clear();
-                Console.WriteLine("You won! The correct word was {0}\nPress any key to continue...\n", this.wordToGuess);
+                string wonText = $"You won! The correct word was {this.wordToGuess}\nPress any key to continue...\n";
+                Console.WriteLine(wonText);
                 this.isGameOver = true;
                 Console.ReadKey(true);
             }
@@ -93,11 +97,15 @@ namespace HangMan.States
             {
                 this.remainingLives = 0;
                 Console.Clear();
-                Console.WriteLine("Game over! The correct word was: {0}\n", this.wordToGuess);
+                string gameOverText = $"Game over! The correct word was: {this.wordToGuess}\n";
+                Console.WriteLine(gameOverText);
                 this.isGameOver = true;
             }
         }
 
+        /// <summary>
+        /// Checks if the input is correct and displays it.
+        /// </summary>
         private void UpdateInput()
         {
             string guessedLetter = Console.ReadLine();
@@ -108,22 +116,32 @@ namespace HangMan.States
             }
         }
 
+        /// <summary>
+        /// Redraws the UI every frame.
+        /// </summary>
         private void UpdateUI()
         {
             Console.Clear();
 
             for (int i = 0; i < this.currentGuess.Length; i++)
             {
-                Console.Write("{0} ", this.currentGuess[i]);
+                string emptyStringText = $"{this.currentGuess[i]} ";
+                Console.Write(emptyStringText);
             }
 
-            Console.WriteLine(" " + this.wordToGuess);
-            Console.WriteLine("Number of Lives: {0}", this.remainingLives);
-            Console.WriteLine();
-            Console.WriteLine("All Guessed Letters: {0}", this.allGuessedLetters);
-            Console.WriteLine("Wrong Letters: {0}", this.wrongLetters);
-            Console.WriteLine("Correct Letters: {0}", this.correctLetters);
+            const string Separator = " ";
+            string numberOfLivesText = $"Number of Lives: {this.remainingLives}";
+            string allGuessedLettersText = $"All Guessed Letters: {this.allGuessedLetters}";
+            string wrongLettersText = $"Wrong Letters: {this.wrongLetters}";
+            string correctLettersText = $"Correct Letters: {this.correctLetters}";
             const string InputLetter = "Please, input a letter: ";
+
+            Console.WriteLine(Separator);
+            Console.WriteLine(numberOfLivesText);
+            Console.WriteLine();
+            Console.WriteLine(allGuessedLettersText);
+            Console.WriteLine(wrongLettersText);
+            Console.WriteLine(correctLettersText);
             Console.Write(InputLetter);
         }
 
@@ -162,6 +180,9 @@ namespace HangMan.States
             }
         }
 
+        /// <summary>
+        /// Displays information after a game to play again.
+        /// </summary>
         private void PlayAgain()
         {
             const string PlayAgainText = "Do you want to play again?, type Y to play a new word, N to quit game.\nPress M to return to the menu.";
@@ -197,8 +218,14 @@ namespace HangMan.States
             }
         }
 
+        /// <summary>
+        /// Starts the main menu
+        /// </summary>
         private void GoToMainMenu() => new MainMenu();
 
+        /// <summary>
+        /// Exit message.
+        /// </summary>
         private void ExitGame()
         {
             const string ExitString = "Have fun!";

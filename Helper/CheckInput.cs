@@ -13,26 +13,26 @@ namespace HangMan.Helper
         {
             try
             {
-                if (!isNumber && (!char.IsLetter(Convert.ToChar(guessedInput))))
+                if (guessedInput.Length > 1 || guessedInput.Length <= 0)
+                {
+                    Console.Clear();
+                    const string WrongCharacter = "Wrong Input! Please, input a single letter";
+                    Console.WriteLine(WrongCharacter);
+                    Console.ReadKey(true);
+                    return false;
+                }
+                else if (!isNumber && (!char.IsLetter(Convert.ToChar(guessedInput))))
                 {
                     Console.Clear();
                     const string WrongCharacter = "Wrong Input! Please, input a letter";
                     Console.WriteLine(WrongCharacter);
                     Console.ReadKey(true);
                     return false;
-                }
-                else if (guessedInput.Length > 1 || guessedInput.Length == 0)
-                {
-                    Console.Clear();
-                    const string SingleLetter = "Wrong Input! Please, input a Single string";
-                    Console.WriteLine(SingleLetter);
-                    Console.ReadKey(true);
-                    return false;
-                }
+                }                
                 else if (isNumber && char.IsLetter(Convert.ToChar(guessedInput)))
                 {
                     Console.Clear();
-                    const string WrongCharacter = "Wrong Input! Please, input a Number for the selected difficulty";
+                    const string WrongCharacter = "Wrong Input! Please, input a number";
                     Console.WriteLine(WrongCharacter);
                     Console.ReadKey(true);
                     return false;
@@ -48,11 +48,12 @@ namespace HangMan.Helper
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception n)
             {
                 Console.Clear();
-                const string WrongMultiGuess = "Guess with only one character!";
+                const string WrongMultiGuess = "FormatException Execption!";
                 Console.WriteLine(WrongMultiGuess);
+                Console.WriteLine(n.Message);
                 Console.ReadKey(true);
                 return false;
             }

@@ -21,9 +21,10 @@ namespace HangMan.States
         private string[] PickGameDictionary()
         {
             Console.Clear();
-            Console.Write("Select Game Dictionary:\n" +
-                "1: Animals or 2: All words?" +
-                "\nType the number: ");
+            const string GameDifficultyText = "Select Game Dictionary:\n" +
+                "1: Animals, 2: Random words" +
+                "\nType the number: ";
+            Console.Write(GameDifficultyText);
             string pickGameDictionary = Console.ReadLine();
             string[] wordDictionary = { };
 
@@ -41,12 +42,12 @@ namespace HangMan.States
                 }
                 else
                 {
-                    this.PickGameDictionary();
+                    this.SelectGameMode(this.PickGameDictionary());
                 }
             }
             else
             {
-                this.PickGameDictionary();
+                this.SelectGameMode(this.PickGameDictionary());
             }
 
             return wordDictionary;
@@ -84,7 +85,7 @@ namespace HangMan.States
                     numberOfLives = 9;
                 }
                 else if (pickDifficilty.ToUpper() == Medium)
-                {
+                { 
                     minLetterLength = 4;
                     numberOfLives = 6;
                 }

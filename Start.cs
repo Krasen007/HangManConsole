@@ -15,8 +15,7 @@ namespace HangMan
 
         public static void Main(string[] args)
         {
-            PressKeyToStart();
-            StartGame();
+            DefineOsAndStart();
         }
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace HangMan
         /// <summary>
         /// Press any key to start the game.
         /// </summary>
-        private static void PressKeyToStart()
+        private static void DefineOsAndStart()
         {
             OperatingSystem os = Environment.OSVersion;
             PlatformID pid = os.Platform;
@@ -38,23 +37,29 @@ namespace HangMan
                 case PlatformID.Win32Windows:
                 case PlatformID.WinCE:
                     {
-                        Console.WriteLine("Welcome to HangManConsole for Windows");
+                        const string WelcomeWindows = "Welcome to HangManConsole for Windows";
+                        Console.WriteLine(WelcomeWindows);
                         break;
                     }
 
                 case PlatformID.Unix:
-                    Console.WriteLine("Welcome to HangManConsole for Linux");
+                    const string WelcomeLinux = "Welcome to HangManConsole for Linux";
+                    Console.WriteLine(WelcomeLinux);
                     break;
                 case PlatformID.MacOSX:
-                    Console.WriteLine("Welcome to HangManConsole for Mac!");
+                    const string WelcomeMac = "Welcome to HangManConsole for Mac!";
+                    Console.WriteLine(WelcomeMac);
                     break;
                 default:
-                    Console.WriteLine("Welcome to HangManConsole for this OS");
+                    const string WelcomeAnyOS = "Welcome to HangManConsole for any OS";
+                    Console.WriteLine(WelcomeAnyOS);
                     break;
             }
 
-            Console.WriteLine("\nPress any key to start\n");
+            const string AnyKeyStartText = "\nPress any key to start";
+            Console.WriteLine(AnyKeyStartText);
             Console.ReadKey(intercept: true);
+            StartGame();
         }
     }
 }

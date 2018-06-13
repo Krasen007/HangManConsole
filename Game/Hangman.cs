@@ -6,6 +6,7 @@
 namespace HangMan
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using HangMan.Helper;
     using HangMan.States;
@@ -14,10 +15,21 @@ namespace HangMan
     {
         public Hangman()
         {
-            if (File.Exists(Constants.AllWordsDictionary) && File.Exists(Constants.AnimalsDictionary))
+            List<bool> files = new List<bool>
+            {
+                File.Exists(Constants.AllWordsDictionary),
+                File.Exists(Constants.AnimalsDictionary)
+            };
+
+            this.LoadAllNeededFiles(files);
+        }
+
+        private void LoadAllNeededFiles(List<bool> neededFiles)
+        {
+            if (neededFiles[0] && neededFiles[1])
             {
                 this.StartMainMenu();
-            } 
+            }
             else
             {
                 const string FileMissing = "Game dictionary file does not exist. Exiting...";

@@ -12,18 +12,61 @@ namespace HangMan.States
     public class MainMenu
     {
         private readonly CheckInput checkInput = new CheckInput();
+        private int minLetterLength = Constants.DefaultLetterLength;
+        private int numberOfLives = Constants.DefaultLives;
 
         public MainMenu()
-        {            
-            this.SelectGameMode(this.PickGameDictionary());
+        {
+            this.DrawMenuUi();
         }
 
-        private string[] PickGameDictionary()
+        private void DrawMenuUi()
+        {
+            Console.Clear();
+            string menuText = "Main menu\n" +
+                "1: New game\n" +
+                "2: Settings\n" +
+                "3: Exit\n" +
+                "Current settings: Long letter words: " + this.minLetterLength + " lives: " + this.numberOfLives + "\n" +
+                "Your pick: ";
+            Console.Write(menuText);
+
+            string pickMenuItem = Console.ReadLine();
+
+            if (this.checkInput.IsInputCorrect(pickMenuItem, true))
+            {
+                const string NewGame = "1";
+                const string Settings = "2";
+                const string Exit = "3";
+                if (pickMenuItem.ToUpper() == NewGame)
+                {
+                    this.PickGameDictionary();
+                }
+                else if (pickMenuItem.ToUpper() == Settings)
+                {
+                    this.ShowSettings();
+                }
+                else if (pickMenuItem.ToUpper() == Exit)
+                {
+                    this.ShowExitString();
+                }
+                else
+                {
+                    this.DrawMenuUi();
+                }
+            }
+            else
+            {
+                this.DrawMenuUi();
+            }
+        }
+
+        private void PickGameDictionary()
         {
             Console.Clear();
             const string GameDifficultyText = "Select Game Dictionary:\n" +
                 "1: Animals, 2: Random words" +
-                "\nType the number: ";
+                "\nYour pick: ";
             Console.Write(GameDifficultyText);
             string pickGameDictionary = Console.ReadLine();
             string[] wordDictionary = { };
@@ -37,34 +80,38 @@ namespace HangMan.States
                     wordDictionary = File.ReadAllLines(Constants.AnimalsDictionary);
                 }
                 else if (pickGameDictionary.ToUpper() == AllWords)
-                {                    
+                {
                     wordDictionary = File.ReadAllLines(Constants.AllWordsDictionary);
                 }
                 else
                 {
-                    this.SelectGameMode(this.PickGameDictionary());
+                    this.PickGameDictionary();
                 }
             }
             else
             {
-                this.SelectGameMode(this.PickGameDictionary());
+                this.PickGameDictionary();
             }
 
-            return wordDictionary;
+            ///return wordDictionary;
+
+            string[] defaultDictionary = wordDictionary;
+
+            if (this.minLetterLength != Constants.DefaultLives)
+            {
+                this.SelectedNewGame(wordDictionary, this.minLetterLength, this.numberOfLives);
+            }
+            else
+            {
+                this.DefaultNewGame(defaultDictionary, Constants.DefaultLetterLength, Constants.DefaultLives);
+            }
         }
 
         /// <summary>
         /// Lets the user select game mode.
         /// </summary>
-        private void SelectGameMode(string[] wordDictionary)
+        private void ShowSettings()
         {
-            string[] defaultDictionary = wordDictionary;
-
-            const int DefaultLetterLength = 3;
-            const int DefaultLives = 9;
-
-            int minLetterLength = DefaultLetterLength;
-            int numberOfLives = DefaultLives;
             bool wantToExit = false;
 
             Console.Clear();
@@ -81,18 +128,18 @@ namespace HangMan.States
                 const string Exit = "4";
                 if (pickDifficilty.ToUpper() == Easy)
                 {
-                    minLetterLength = 3;
-                    numberOfLives = 9;
+                    this.minLetterLength = 3;
+                    this.numberOfLives = 9;
                 }
                 else if (pickDifficilty.ToUpper() == Medium)
-                { 
-                    minLetterLength = 4;
-                    numberOfLives = 6;
+                {
+                    this.minLetterLength = 4;
+                    this.numberOfLives = 6;
                 }
                 else if (pickDifficilty.ToUpper() == Hard)
                 {
-                    minLetterLength = 6;
-                    numberOfLives = 3;
+                    this.minLetterLength = 6;
+                    this.numberOfLives = 3;
                 }
                 else if (pickDifficilty.ToUpper() == Exit)
                 {
@@ -100,30 +147,29 @@ namespace HangMan.States
                 }
                 else
                 {
-                    this.SelectGameMode(defaultDictionary);
+                    this.ShowSettings();
                 }
             }
             else
             {
-                this.SelectGameMode(defaultDictionary);
+                this.ShowSettings();
             }
 
             if (wantToExit)
             {
-                const string ExitString = "Bye.";
-                Console.WriteLine(ExitString);
+                this.ShowExitString();
             }
             else
             {
-                if (minLetterLength != DefaultLives)
-                {
-                    this.SelectedNewGame(wordDictionary, minLetterLength, numberOfLives);
-                }
-                else
-                {
-                    this.DefaultNewGame(defaultDictionary, DefaultLetterLength, DefaultLives);
-                }
+                this.DrawMenuUi();
             }
+        }
+
+        private void ShowExitString()
+        {
+            Console.Clear();
+            const string ExitString = "Thank you for playing!";
+            Console.WriteLine(ExitString);
         }
 
         private void SelectedNewGame(string[] wordDictionary, int minLetterLength, int numberOfLives)

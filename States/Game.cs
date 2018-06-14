@@ -40,7 +40,7 @@ namespace HangMan.States
 
             do
             {
-                int pickRandomWord = rng.Next(1, wordDictionary.Length);
+                int pickRandomWord = rng.Next(0, wordDictionary.Length);
                 this.wordToGuess = wordDictionary[pickRandomWord];
             }
             while (this.wordToGuess.Length <= minLetterLength);
@@ -63,7 +63,7 @@ namespace HangMan.States
         {
             while (!this.isGameOver)
             {
-                this.UpdateUI();
+                this.UpdateUi();
                 this.UpdateInput();
                 this.CheckGameWin();
                 this.CheckGameOver();
@@ -119,7 +119,7 @@ namespace HangMan.States
         /// <summary>
         /// Redraws the UI every frame.
         /// </summary>
-        private void UpdateUI()
+        private void UpdateUi()
         {
             Console.Clear();
 

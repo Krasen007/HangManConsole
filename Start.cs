@@ -14,7 +14,7 @@ namespace HangMan
         }
 
         public static void Main(string[] args)
-        {
+        {            
             DefineOsAndStart();
         }
 
@@ -24,7 +24,7 @@ namespace HangMan
         private static void StartGame() => new Hangman();
 
         /// <summary>
-        /// Press any key to start the game.
+        /// Detect OS.
         /// </summary>
         private static void DefineOsAndStart()
         {
@@ -56,8 +56,8 @@ namespace HangMan
                     break;
             }
 
-            const string AnyKeyStartText = "\nPress any key to start";
-            Console.WriteLine(AnyKeyStartText);
+            const string AnyKeyStartText = "\nPress any key to start... ";
+            Console.Write(AnyKeyStartText);
             Console.ReadKey(intercept: true);
             StartGame();
         }

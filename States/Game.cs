@@ -15,6 +15,7 @@ namespace HangMan.States
         private readonly string[] currentWordDictionary;
         private readonly int numberOfLives;
         private readonly int minLetterLength;
+        private readonly bool firstLastLtrShown;
 
         private int remainingLives;
         private bool isGameOver;
@@ -24,16 +25,17 @@ namespace HangMan.States
         private string correctLetters;
         private string wordToGuess;
 
-        public Game(string[] wordDictionary, int numberOfLives, int minLetterLength)
+        public Game(string[] wordDictionary, int numberOfLives, int minLetterLength, bool firstLastLtrShown)
         {
             this.currentWordDictionary = wordDictionary;
             this.numberOfLives = numberOfLives;
             this.minLetterLength = minLetterLength;
+            this.firstLastLtrShown = firstLastLtrShown;
 
-            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength);
+            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.firstLastLtrShown);
         }
 
-        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength)
+        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength, bool firstLastLtrShown)
         {
             Random rng = new Random();
             this.wordToGuess = string.Empty;
@@ -47,11 +49,21 @@ namespace HangMan.States
 
             // Initialiazation
             this.remainingLives = numberOfLives;
-            this.currentGuess = new string('_', this.wordToGuess.Length).ToCharArray();
             this.allGuessedLetters = string.Empty;
             this.wrongLetters = string.Empty;
             this.correctLetters = string.Empty;
             this.isGameOver = false;
+
+            if (this.firstLastLtrShown)
+            {
+                this.currentGuess = new string('_', this.wordToGuess.Length).ToCharArray();
+                this.currentGuess[0] = this.wordToGuess[0];
+                this.currentGuess[this.currentGuess.Length - 1] = this.wordToGuess[this.wordToGuess.Length - 1];
+            }
+            else
+            {
+                this.currentGuess = new string('_', this.wordToGuess.Length).ToCharArray();
+            }
 
             this.GameLoop();
         }
@@ -197,7 +209,7 @@ namespace HangMan.States
                 const string Menu = "M";
                 if (playAgainLetter.ToUpper() == Yes)
                 {
-                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength);
+                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.firstLastLtrShown);
                 }
                 else if (playAgainLetter.ToUpper() == No)
                 {
@@ -221,7 +233,7 @@ namespace HangMan.States
         /// <summary>
         /// Starts the main menu
         /// </summary>
-        private void GoToMainMenu() => new MainMenu();
+        private void GoToMainMenu() => new MainMenu(this.minLetterLength, this.numberOfLives, this.firstLastLtrShown);
 
         /// <summary>
         /// Exit message.

@@ -16,7 +16,7 @@ namespace HangMan.Helper
                 if (guessedInput.Length > 1 || guessedInput.Length <= 0)
                 {
                     Console.Clear();
-                    const string WrongCharacter = "Wrong Input! Please, input a single letter";
+                    const string WrongCharacter = "Wrong Input! Please, input a single character";
                     Console.WriteLine(WrongCharacter);
                     Console.ReadKey(true);
                     return false;

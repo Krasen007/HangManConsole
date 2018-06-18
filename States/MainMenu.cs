@@ -13,13 +13,15 @@ namespace HangMan.States
     {
         private readonly CheckInput checkInput = new CheckInput();
         private int minLetterLength;
+        private int maxLetterLength;
         private int numberOfLives;
         private bool firstLastLtrShown;
         private bool customGame;
 
-        public MainMenu(int minLetterLength, int numberOfLives, bool firstLastLtrShown)
+        public MainMenu(int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)
         {
             this.minLetterLength = minLetterLength;
+            this.maxLetterLength = maxLetterLength;
             this.numberOfLives = numberOfLives;
             this.firstLastLtrShown = firstLastLtrShown;
             this.DrawMenuUi();
@@ -39,7 +41,7 @@ namespace HangMan.States
                 "Minimium word letter length: " + this.minLetterLength + 
                 "\nNumber of lives: " + this.numberOfLives +
                 "\nFirst and last letter of word shown: " + this.firstLastLtrShown + "\n\n" +
-                "Your pick: ";
+                "Enter number for selection ";
             Console.Write(menuText);
 
             string pickMenuItem = Console.ReadLine();
@@ -83,7 +85,7 @@ namespace HangMan.States
                 "1: Animals\n" +
                 "2: Random words\n" +
                 "3: Exit" +
-                "\nYour pick: ";
+                "\nEnter number for selection: ";
             Console.Write(GameDifficultyText);
             string pickGameDictionary = Console.ReadLine();
             string[] wordDictionary = { };
@@ -124,11 +126,11 @@ namespace HangMan.States
             {
                 if (this.customGame)
                 {
-                    this.SelectedNewGame(wordDictionary, this.minLetterLength, this.numberOfLives, this.firstLastLtrShown);
+                    this.SelectedNewGame(wordDictionary, this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
                 }
                 else
                 {
-                    this.DefaultNewGame(wordDictionary, Constants.DefaultLetterLength, Constants.DefaultLives, true);
+                    this.DefaultNewGame(wordDictionary, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
                 }
             }
         }
@@ -146,7 +148,7 @@ namespace HangMan.States
                 "3: Long words, 3 lives\n" +
                 "4: Enable/disable first and last letter of word shown\n" +
                 "5: Exit game\n" +
-                "Your pick: ";
+                "Enter number for selection: ";
             Console.Write(SelectDifficulty);
 
             string pickDifficilty = Console.ReadLine();
@@ -161,16 +163,19 @@ namespace HangMan.States
                 if (pickDifficilty.ToUpper() == Easy)
                 {
                     this.minLetterLength = 3;
+                    this.maxLetterLength = 5;
                     this.numberOfLives = 9;
                 }
                 else if (pickDifficilty.ToUpper() == Medium)
                 {
                     this.minLetterLength = 4;
+                    this.maxLetterLength = 7;
                     this.numberOfLives = 6;
                 }
                 else if (pickDifficilty.ToUpper() == Hard)
                 {
                     this.minLetterLength = 6;
+                    this.maxLetterLength = 10;
                     this.numberOfLives = 3;
                 }
                 else if (pickDifficilty.ToUpper() == ShowFirstLastLtrs)
@@ -219,10 +224,10 @@ namespace HangMan.States
             Console.ReadKey(intercept: true);
         }
 
-        private void SelectedNewGame(string[] wordDictionary, int minLetterLength, int numberOfLives, bool firstLastLtrShown)
-            => new Game(wordDictionary, numberOfLives, minLetterLength, firstLastLtrShown);
+        private void SelectedNewGame(string[] wordDictionary, int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)
+            => new Game(wordDictionary, numberOfLives, minLetterLength, maxLetterLength, firstLastLtrShown);
 
-        private void DefaultNewGame(string[] defaultDictionary, int defaultLetterLength, int defaultLives, bool firstLastLtrShown)
-            => new Game(defaultDictionary, defaultLives, defaultLetterLength, firstLastLtrShown);
+        private void DefaultNewGame(string[] defaultDictionary, int defaultMinLetterLength, int defaultMaxLetterLength, int defaultLives, bool firstLastLtrShown)
+            => new Game(defaultDictionary, defaultLives, defaultMinLetterLength, defaultMaxLetterLength, firstLastLtrShown);
     }
 }

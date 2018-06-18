@@ -15,6 +15,7 @@ namespace HangMan.States
         private readonly string[] currentWordDictionary;
         private readonly int numberOfLives;
         private readonly int minLetterLength;
+        private readonly int maxLetterLength;
         private readonly bool firstLastLtrShown;
 
         private int remainingLives;
@@ -25,27 +26,37 @@ namespace HangMan.States
         private string correctLetters;
         private string wordToGuess;
 
-        public Game(string[] wordDictionary, int numberOfLives, int minLetterLength, bool firstLastLtrShown)
+        public Game(string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown)
         {
             this.currentWordDictionary = wordDictionary;
             this.numberOfLives = numberOfLives;
             this.minLetterLength = minLetterLength;
+            this.maxLetterLength = maxLetterLength;
             this.firstLastLtrShown = firstLastLtrShown;
 
-            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.firstLastLtrShown);
+            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.maxLetterLength, this.firstLastLtrShown);
         }
 
-        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength, bool firstLastLtrShown)
+        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown)
         {
             Random rng = new Random();
             this.wordToGuess = string.Empty;
+            bool selectedWord = false;
 
-            do
+            while (!selectedWord)
             {
                 int pickRandomWord = rng.Next(0, wordDictionary.Length);
                 this.wordToGuess = wordDictionary[pickRandomWord];
+                if (this.wordToGuess.Length >= minLetterLength && this.wordToGuess.Length <= maxLetterLength)
+                {
+                    selectedWord = true;
+                }
+                else
+                {
+                    selectedWord = false;
+                }
             }
-            while (this.wordToGuess.Length <= minLetterLength);
+            
 
             // Initialiazation
             this.remainingLives = numberOfLives;
@@ -209,7 +220,7 @@ namespace HangMan.States
                 const string Menu = "M";
                 if (playAgainLetter.ToUpper() == Yes)
                 {
-                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.firstLastLtrShown);
+                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.maxLetterLength, this.firstLastLtrShown);
                 }
                 else if (playAgainLetter.ToUpper() == No)
                 {
@@ -233,7 +244,7 @@ namespace HangMan.States
         /// <summary>
         /// Starts the main menu
         /// </summary>
-        private void GoToMainMenu() => new MainMenu(this.minLetterLength, this.numberOfLives, this.firstLastLtrShown);
+        private void GoToMainMenu() => new MainMenu(this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
 
         /// <summary>
         /// Exit message.

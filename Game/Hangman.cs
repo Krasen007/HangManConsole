@@ -38,6 +38,6 @@ namespace HangMan
             }
         }
 
-        private void StartMainMenu() => new MainMenu(Constants.DefaultLetterLength, Constants.DefaultLives, true);
+        private void StartMainMenu() => new MainMenu(Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
     }
 }

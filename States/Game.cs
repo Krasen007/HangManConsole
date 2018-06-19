@@ -6,6 +6,7 @@
 namespace HangMan.States
 {
     using System;
+    using System.Collections.Generic;
     using System.Text;
     using HangMan.Helper;
 
@@ -25,38 +26,51 @@ namespace HangMan.States
         private string wrongLetters;
         private string correctLetters;
         private string wordToGuess;
+        private List<string> playedWords;
 
         public Game(string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown)
         {
+            this.playedWords = new List<string>();
             this.currentWordDictionary = wordDictionary;
             this.numberOfLives = numberOfLives;
             this.minLetterLength = minLetterLength;
             this.maxLetterLength = maxLetterLength;
             this.firstLastLtrShown = firstLastLtrShown;
 
-            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.maxLetterLength, this.firstLastLtrShown);
+            this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.maxLetterLength, this.firstLastLtrShown, this.playedWords);
         }
 
-        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown)
+        public void NewGame(string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown, List<string> playedWords)
         {
             Random rng = new Random();
             this.wordToGuess = string.Empty;
             bool selectedWord = false;
 
+
+
+            //for (int i = 0; i < wordDictionary.Length; i++)
+            //{
+            //    if (this.wordToGuess.Length >= minLetterLength && this.wordToGuess.Length <= maxLetterLength)
+            //    {
+            //        playedWords.Add(wordDictionary[i]);
+            //    }
+            //}
+
             while (!selectedWord)
             {
                 int pickRandomWord = rng.Next(0, wordDictionary.Length);
                 this.wordToGuess = wordDictionary[pickRandomWord];
-                if (this.wordToGuess.Length >= minLetterLength && this.wordToGuess.Length <= maxLetterLength)
+
+                if (this.wordToGuess.Length >= minLetterLength && this.wordToGuess.Length <= maxLetterLength && !playedWords.Contains(wordDictionary[pickRandomWord]))
                 {
                     selectedWord = true;
+                    this.playedWords.Add(wordDictionary[pickRandomWord]);
                 }
                 else
                 {
                     selectedWord = false;
                 }
             }
-            
 
             // Initialiazation
             this.remainingLives = numberOfLives;
@@ -220,7 +234,7 @@ namespace HangMan.States
                 const string Menu = "M";
                 if (playAgainLetter.ToUpper() == Yes)
                 {
-                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.maxLetterLength, this.firstLastLtrShown);
+                    this.NewGame(this.currentWordDictionary, this.numberOfLives, this.minLetterLength, this.maxLetterLength, this.firstLastLtrShown, this.playedWords);
                 }
                 else if (playAgainLetter.ToUpper() == No)
                 {

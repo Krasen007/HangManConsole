@@ -38,7 +38,7 @@ namespace HangMan.States
                 "2: Settings\n" +
                 "3: Exit\n\n" +
                 "Current settings: \n" +
-                "Minimium word letter length: " + this.minLetterLength + 
+                "Min/Max word letter length is: " + this.minLetterLength + " to " + this.maxLetterLength +
                 "\nNumber of lives: " + this.numberOfLives +
                 "\nFirst and last letter of word shown: " + this.firstLastLtrShown + "\n\n" +
                 "Enter number for selection ";

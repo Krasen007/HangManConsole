@@ -32,7 +32,7 @@ namespace HangMan
             }
             else
             {
-                const string FileMissing = "Game dictionary file does not exist. Exiting...";
+                const string FileMissing = "Game dictionary file does not exist. Exiting... ";
                 Console.WriteLine(FileMissing);
                 Console.ReadKey(intercept: true);
             }

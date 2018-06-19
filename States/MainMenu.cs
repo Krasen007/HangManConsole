@@ -41,7 +41,7 @@ namespace HangMan.States
                 "Min/Max word letter length is: " + this.minLetterLength + " to " + this.maxLetterLength +
                 "\nNumber of lives: " + this.numberOfLives +
                 "\nFirst and last letter of word shown: " + this.firstLastLtrShown + "\n\n" +
-                "Enter number for selection ";
+                "Enter number for selection: ";
             Console.Write(menuText);
 
             string pickMenuItem = Console.ReadLine();

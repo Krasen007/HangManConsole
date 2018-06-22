@@ -18,6 +18,7 @@ namespace HangMan.States
         private readonly int maxLetterLength;
         private readonly bool firstLastLtrShown;
         private readonly List<string> playableWords;
+        private readonly List<string> gameFiles;
 
         private int remainingLives;
         private bool isGameOver;
@@ -27,8 +28,9 @@ namespace HangMan.States
         private string correctLetters;
         private string wordToGuess;
 
-        public Game(string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown)
+        public Game(List<string> gameFiles, string[] wordDictionary, int numberOfLives, int minLetterLength, int maxLetterLength, bool firstLastLtrShown)
         {
+            this.gameFiles = gameFiles;
             string[] currentWordDictionary;
             currentWordDictionary = wordDictionary;
             this.numberOfLives = numberOfLives;
@@ -267,7 +269,7 @@ namespace HangMan.States
         /// <summary>
         /// Starts the main menu
         /// </summary>
-        private void GoToMainMenu() => new MainMenu(this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
+        private void GoToMainMenu() => new MainMenu(this.gameFiles, this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
 
         /// <summary>
         /// Exit message.

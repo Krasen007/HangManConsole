@@ -6,20 +6,23 @@
 namespace HangMan.States
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using HangMan.Helper;
 
     public class MainMenu
     {
         private readonly CheckInput checkInput = new CheckInput();
+        private readonly List<string> gameFiles;
         private int minLetterLength;
         private int maxLetterLength;
         private int numberOfLives;
         private bool firstLastLtrShown;
         private bool customGame;
 
-        public MainMenu(int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)
+        public MainMenu(List<string> gameFiles, int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)
         {
+            this.gameFiles = gameFiles;
             this.minLetterLength = minLetterLength;
             this.maxLetterLength = maxLetterLength;
             this.numberOfLives = numberOfLives;
@@ -81,16 +84,25 @@ namespace HangMan.States
         private void NewGameMenu()
         {
             Console.Clear();
-            const string GameDifficultyText = "Select Game Dictionary:\n" +
-                "1: Animals\n" +
-                "2: Random words\n" +
-                "3: Exit" +
+            string menuText = "Select game dictionary:";
+            Console.WriteLine(menuText);
+
+            int menuIndex = this.gameFiles.Count;
+
+            for (int i = 0; i < menuIndex; i++)
+            {
+                Console.WriteLine(i + 1 + ": " + this.gameFiles[i].Remove(0, 7));
+            }
+
+            string settingsText = menuIndex + 1 + ": Exit" +
                 "\nEnter number for selection: ";
-            Console.Write(GameDifficultyText);
+            Console.Write(settingsText);
+
             string pickGameDictionary = Console.ReadLine();
             string[] wordDictionary = { };
             bool wantToExit = false;
 
+            // FIX: Next part to do the multiple input files...
             if (this.checkInput.IsInputCorrect(pickGameDictionary, true))
             {
                 const string Animals = "1";
@@ -126,11 +138,11 @@ namespace HangMan.States
             {
                 if (this.customGame)
                 {
-                    this.SelectedNewGame(wordDictionary, this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
+                    this.SelectedNewGame(gameFiles, wordDictionary, this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
                 }
                 else
                 {
-                    this.DefaultNewGame(wordDictionary, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
+                    this.DefaultNewGame(gameFiles, wordDictionary, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
                 }
             }
         }
@@ -224,10 +236,10 @@ namespace HangMan.States
             Console.ReadKey(intercept: true);
         }
 
-        private void SelectedNewGame(string[] wordDictionary, int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)
-            => new Game(wordDictionary, numberOfLives, minLetterLength, maxLetterLength, firstLastLtrShown);
+        private void SelectedNewGame(List<string> gameFiles, string[] wordDictionary, int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)
+            => new Game(gameFiles, wordDictionary, numberOfLives, minLetterLength, maxLetterLength, firstLastLtrShown);
 
-        private void DefaultNewGame(string[] defaultDictionary, int defaultMinLetterLength, int defaultMaxLetterLength, int defaultLives, bool firstLastLtrShown)
-            => new Game(defaultDictionary, defaultLives, defaultMinLetterLength, defaultMaxLetterLength, firstLastLtrShown);
+        private void DefaultNewGame(List<string> gameFiles, string[] defaultDictionary, int defaultMinLetterLength, int defaultMaxLetterLength, int defaultLives, bool firstLastLtrShown)
+            => new Game(gameFiles, defaultDictionary, defaultLives, defaultMinLetterLength, defaultMaxLetterLength, firstLastLtrShown);
     }
 }

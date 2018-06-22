@@ -4,6 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Description>My take on hangman.</Description>
+    <ApplicationIcon>alarm icon.ico</ApplicationIcon>
+    <AssemblyName>HangManConsole</AssemblyName>
+    <StartupObject>HangMan.Start</StartupObject>
   </PropertyGroup>
 
 </Project>

@@ -91,7 +91,8 @@ namespace HangMan.States
 
             for (int i = 0; i < menuIndex; i++)
             {
-                Console.WriteLine(i + 1 + ": " + this.gameFiles[i].Remove(0, 7));
+                string menuListText = i + 1 + ": " + this.gameFiles[i].Remove(0, 7) /* hides the asset path */;
+                Console.WriteLine(menuListText);
             }
 
             string settingsText = menuIndex + 1 + ": Exit" +
@@ -115,7 +116,7 @@ namespace HangMan.States
                     {
                         if (pickGameDictionaryUserInput.ToUpper() == i.ToString())
                         {
-                            wordDictionary = File.ReadAllLines(this.gameFiles[i - 1]);
+                            wordDictionary = File.ReadAllLines(this.gameFiles[i - 1]/* -1 because of zero based list for selection */);
                             break;
                         }
                         else if (pickGameDictionaryUserInput.ToUpper() == (menuIndex + 1).ToString())

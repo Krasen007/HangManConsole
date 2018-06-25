@@ -17,35 +17,30 @@ namespace HangMan
 
         public Hangman()
         {
-            List<bool> files = new List<bool>();            
-
             try
             {
-                foreach (var file in Directory.EnumerateFiles(Constants.FolderPath))
+                foreach (string file in Directory.EnumerateFiles(Constants.FolderPath))
                 {
-                    if (File.Exists(file))
-                    {
-                        files.Add(true);
-                        this.gameDictFile.Add(file);
-                    }
+                    this.gameDictFile.Add(file);
                 }
             }
             catch (IOException ex)
             {
-                const string FileMissing = "Game dictionary file does not exist. Exiting... ";
+                const string FileMissing = "Game Assets directory does not exist. Exiting... ";
                 Console.WriteLine(FileMissing);
                 Console.WriteLine(ex.Message);
+                Console.ReadKey(intercept: true);
                 throw;
             }
 
-            this.LoadAllNeededFiles(files);
+            this.LoadAllNeededFiles(this.gameDictFile);
         }
 
-        private void LoadAllNeededFiles(List<bool> neededFiles)
+        private void LoadAllNeededFiles(List<string> neededFiles)
         {
-            if (neededFiles.Contains(false))
+            if (neededFiles.Count == 0)
             {
-                const string FileMissing = "Game dictionary file does not exist. Exiting... ";
+                const string FileMissing = "No game dictionary file exist. Try adding a few. The game will now exit... ";
                 Console.WriteLine(FileMissing);
                 Console.ReadKey(intercept: true);
             }

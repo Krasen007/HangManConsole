@@ -27,13 +27,13 @@ namespace HangMan.States
             this.maxLetterLength = maxLetterLength;
             this.numberOfLives = numberOfLives;
             this.firstLastLtrShown = firstLastLtrShown;
-            this.DrawMenuUi();
+            this.DrawMainMenu();
         }
 
         /// <summary>
         /// Draws the Ui of the menu.
         /// </summary>
-        private void DrawMenuUi()
+        private void DrawMainMenu()
         {
             Console.Clear();
             string menuText = "Main menu\n" +
@@ -69,12 +69,12 @@ namespace HangMan.States
                 }
                 else
                 {
-                    this.DrawMenuUi();
+                    this.DrawMainMenu();
                 }
             }
             else
             {
-                this.DrawMenuUi();
+                this.DrawMainMenu();
             }
         }
 
@@ -98,31 +98,32 @@ namespace HangMan.States
                 "\nEnter number for selection: ";
             Console.Write(settingsText);
 
-            string pickGameDictionary = Console.ReadLine();
+            string pickGameDictionaryUserInput = Console.ReadLine();
             string[] wordDictionary = { };
+
             bool wantToExit = false;
 
-            // FIX: Next part to do the multiple input files...
-            if (this.checkInput.IsInputCorrect(pickGameDictionary, true))
+            if (this.checkInput.IsInputCorrect(pickGameDictionaryUserInput, true))
             {
-                const string Animals = "1";
-                const string AllWords = "2";
-                const string Exit = "3";
-                if (pickGameDictionary.ToUpper() == Animals)
+                if (int.TryParse(pickGameDictionaryUserInput, out int givenNumber) && (givenNumber > menuIndex + 1))
                 {
-                    wordDictionary = File.ReadAllLines(Constants.AnimalsDictionary);
-                }
-                else if (pickGameDictionary.ToUpper() == AllWords)
-                {
-                    wordDictionary = File.ReadAllLines(Constants.AllWordsDictionary);
-                }
-                else if (pickGameDictionary.ToUpper() == Exit)
-                {
-                    wantToExit = true;
+                    this.NewGameMenu();
                 }
                 else
                 {
-                    this.NewGameMenu();
+                    for (int i = 1; i < menuIndex + 1; i++)
+                    {
+                        if (pickGameDictionaryUserInput.ToUpper() == i.ToString())
+                        {
+                            wordDictionary = File.ReadAllLines(this.gameFiles[i - 1]);
+                            break;
+                        }
+                        else if (pickGameDictionaryUserInput.ToUpper() == (menuIndex + 1).ToString())
+                        {
+                            wantToExit = true;
+                            break;
+                        }
+                    }
                 }
             }
             else
@@ -138,11 +139,11 @@ namespace HangMan.States
             {
                 if (this.customGame)
                 {
-                    this.SelectedNewGame(gameFiles, wordDictionary, this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
+                    this.SelectedNewGame(this.gameFiles, wordDictionary, this.minLetterLength, this.maxLetterLength, this.numberOfLives, this.firstLastLtrShown);
                 }
                 else
                 {
-                    this.DefaultNewGame(gameFiles, wordDictionary, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
+                    this.DefaultNewGame(this.gameFiles, wordDictionary, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
                 }
             }
         }
@@ -221,7 +222,7 @@ namespace HangMan.States
             }
             else
             {
-                this.DrawMenuUi();
+                this.DrawMainMenu();
             }
         }
 

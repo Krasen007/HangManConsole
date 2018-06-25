@@ -26,7 +26,7 @@ namespace HangMan
                     if (File.Exists(file))
                     {
                         files.Add(true);
-                        gameDictFile.Add(file);
+                        this.gameDictFile.Add(file);
                     }
                 }
             }
@@ -55,6 +55,6 @@ namespace HangMan
             }
         }
 
-        private void StartMainMenu() => new MainMenu(gameDictFile, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
+        private void StartMainMenu() => new MainMenu(this.gameDictFile, Constants.DefaultMinLetterLength, Constants.DefaultMaxLetterLength, Constants.DefaultLives, true);
     }
 }

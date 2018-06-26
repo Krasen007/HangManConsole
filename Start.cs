@@ -16,7 +16,9 @@ namespace HangMan
         public static void Main(string[] args)
         {
             Console.Clear();
-            DefineOsAndStart();
+            DefineOs();
+            PressAnyKey();
+            StartGame();
         }
 
         /// <summary>
@@ -25,9 +27,9 @@ namespace HangMan
         private static void StartGame() => new Hangman();
 
         /// <summary>
-        /// Detect OS.
+        /// Detects the current OS.
         /// </summary>
-        private static void DefineOsAndStart()
+        private static void DefineOs()
         {
             OperatingSystem os = Environment.OSVersion;
             PlatformID pid = os.Platform;
@@ -55,12 +57,17 @@ namespace HangMan
                     const string WelcomeAnyOS = "Welcome to HangManConsole for any OS";
                     Console.WriteLine(WelcomeAnyOS);
                     break;
-            }
+            }            
+        }
 
+        /// <summary>
+        /// Asks for user keypress.
+        /// </summary>
+        private static void PressAnyKey()
+        {
             const string AnyKeyStartText = "\nPress any key to start... ";
             Console.Write(AnyKeyStartText);
-            Console.ReadKey(intercept: true);
-            StartGame();
+            Console.ReadKey(intercept: true);            
         }
     }
 }

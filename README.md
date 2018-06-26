@@ -2,9 +2,9 @@
 A Hangman Game made for console, using .Net core.
 
 ##You can add your own game dictionary files.
-Create .txt file and addd it to the Assets folder.
-The game will read all the files and add them in the menu for user selection.
-Pick your game mode and play Hangman! After level is clear you can select different game dictionary.
+Create empty text file, add the words you want on new lines and save it to the Assets folder.
+The game will read all added files and add them in the menu for user selection.
+Pick your game dictionary and play Hangman! After the level is clear you can select different game dictionary.
 
-### Future plans:
-Add coloring;
+###
+Krasen Ivanov 2018

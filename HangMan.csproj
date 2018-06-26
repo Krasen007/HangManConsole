@@ -7,6 +7,26 @@
     <ApplicationIcon>alarm icon.ico</ApplicationIcon>
     <AssemblyName>HangManConsole</AssemblyName>
     <StartupObject>HangMan.Start</StartupObject>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <Copyright>Krasen Ivanov 2018</Copyright>
+    <Company />
+    <Authors>Krasen Ivanov</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Assets\animals">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\letters">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\random words">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 
 </Project>

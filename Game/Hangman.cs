@@ -30,6 +30,7 @@ namespace HangMan
                 Console.WriteLine(FileMissing);
                 Console.WriteLine(ex.Message);
                 Console.ReadKey(intercept: true);
+                Console.Clear();
                 throw;
             }
 
@@ -40,9 +41,11 @@ namespace HangMan
         {
             if (neededFiles.Count == 0)
             {
-                const string FileMissing = "No game dictionary file exist. Try adding a few. The game will now exit... ";
+                const string FileMissing = "No game dictionary file exist. Try adding a few. " +
+                    "\nThe game will now exit... ";
                 Console.WriteLine(FileMissing);
                 Console.ReadKey(intercept: true);
+                Console.Clear();
             }
             else
             {

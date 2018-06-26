@@ -14,7 +14,8 @@ namespace HangMan
         }
 
         public static void Main(string[] args)
-        {            
+        {
+            Console.Clear();
             DefineOsAndStart();
         }
 

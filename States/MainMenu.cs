@@ -116,7 +116,7 @@ namespace HangMan.States
                     {
                         if (pickGameDictionaryUserInput.ToUpper() == i.ToString())
                         {
-                            wordDictionary = File.ReadAllLines(this.gameFiles[i - 1]/* -1 because of zero based list for selection */);
+                            wordDictionary = File.ReadAllLines(this.gameFiles[i - 1] /* -1 because of zero based list for selection */);
                             break;
                         }
                         else if (pickGameDictionaryUserInput.ToUpper() == (menuIndex + 1).ToString())
@@ -236,6 +236,7 @@ namespace HangMan.States
             const string ExitString = "Thank you for playing!\n\nPress any key to exit... ";
             Console.Write(ExitString);
             Console.ReadKey(intercept: true);
+            Console.Clear();
         }
 
         private void SelectedNewGame(List<string> gameFiles, string[] wordDictionary, int minLetterLength, int maxLetterLength, int numberOfLives, bool firstLastLtrShown)

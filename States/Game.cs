@@ -39,7 +39,7 @@ namespace HangMan.States
             this.firstLastLtrShown = firstLastLtrShown;
 
             this.playableWords = new List<string>();
-            this.wordToGuess = string.Empty;            
+            this.wordToGuess = string.Empty;
 
             for (int i = 0; i < currentWordDictionary.Length; i++)
             {
@@ -78,8 +78,17 @@ namespace HangMan.States
             if (this.firstLastLtrShown)
             {
                 this.currentGuess = new string('_', this.wordToGuess.Length).ToCharArray();
-                this.currentGuess[0] = this.wordToGuess[0];
-                this.currentGuess[this.currentGuess.Length - 1] = this.wordToGuess[this.wordToGuess.Length - 1];
+
+                // Not sure if this fixed anything.
+                if (this.wordToGuess.Length > 1)
+                {
+                    this.currentGuess[0] = this.wordToGuess[0];
+                    this.currentGuess[this.currentGuess.Length - 1] = this.wordToGuess[this.wordToGuess.Length - 1];
+                }
+                else
+                {
+                    Console.WriteLine("maybe this was the error");
+                }
             }
             else
             {

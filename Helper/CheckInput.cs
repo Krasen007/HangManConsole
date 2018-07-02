@@ -30,7 +30,7 @@ namespace HangMan.Helper
                     Console.ReadKey(true);
                     return false;
                 }
-                else if (isNumber && guessedInput.Any(x => char.IsLetter(x)))
+                else if (isNumber && guessedInput.Any(charFromInput => char.IsLetter(charFromInput)))
                 {
                     Console.Clear();
                     const string WrongCharacter = "Wrong Input! Please, input a number";

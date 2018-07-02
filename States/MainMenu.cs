@@ -103,8 +103,8 @@ namespace HangMan.States
             string[] wordDictionary = { };
 
             bool wantToExit = false;
-
-            if (this.checkInput.IsInputCorrect(pickGameDictionaryUserInput, true))
+            
+            if (this.checkInput.IsInputCorrect(pickGameDictionaryUserInput, true, menuIndex + 1))
             {
                 if (int.TryParse(pickGameDictionaryUserInput, out int givenNumber) && (givenNumber > menuIndex + 1))
                 {

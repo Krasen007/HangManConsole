@@ -6,14 +6,15 @@
 namespace HangMan.Helper
 {
     using System;
+    using System.Linq;
 
     public class CheckInput
     {
-        public bool IsInputCorrect(string guessedInput, bool isNumber)
+        public bool IsInputCorrect(string guessedInput, bool isNumber, int givenOptionsNumber = 1)
         {
             try
             {
-                if (guessedInput.Length > 1 || guessedInput.Length <= 0)
+                if (guessedInput.Length > givenOptionsNumber || guessedInput.Length <= 0)
                 {
                     Console.Clear();
                     const string WrongCharacter = "Wrong Input! Please, input a single character";
@@ -28,8 +29,8 @@ namespace HangMan.Helper
                     Console.WriteLine(WrongCharacter);
                     Console.ReadKey(true);
                     return false;
-                }                
-                else if (isNumber && char.IsLetter(Convert.ToChar(guessedInput)))
+                }
+                else if (isNumber && guessedInput.Any(x => char.IsLetter(x)))
                 {
                     Console.Clear();
                     const string WrongCharacter = "Wrong Input! Please, input a number";
